@@ -29,7 +29,9 @@ console.log(PORT);
 
 app.use(express.json());
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy:false,
+}));
 app.use(morgan("dev"));
 
 // apply arcjet
