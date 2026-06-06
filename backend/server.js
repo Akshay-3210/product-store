@@ -69,13 +69,10 @@ app.use(async (req,res,next)=>{
 
 app.use("/api/products", productRoutes)
 
-if(process.env.NODE_ENV==="production"){
-    // app.use(express.static(path.join(__dirname,"/frontend/.next")));
-
-    app.all("*", (req, res) => {
+// Serve frontend routes through Next.js on the same port for both dev and production.
+app.use((req, res) => {
     return handle(req, res);
-    });
-}
+});
 
 async function initDB(){
     try {

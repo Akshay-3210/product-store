@@ -1,15 +1,16 @@
 "use client"
 import { useProductStore } from '@/store/useProductStore'
 import { ArrowLeftIcon, SaveIcon, Trash2Icon } from 'lucide-react';
-import { useParams,useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 
-function ProductPage() {
+function ProductPage({ id }) {
   const { currentProduct,formData,setFormData,loading,error,fetchProduct,updateProduct,deleteProduct } =useProductStore();
   const router=useRouter();
-  const {id} =useParams();
   useEffect(()=>{
-    fetchProduct(id);
+    if (id) {
+      fetchProduct(id);
+    }
   },[fetchProduct,id]);
   // console.log(currentProduct);
   const handleDelete = async () => {
