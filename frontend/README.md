@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Product Store
+
+Live Demo: https://product-store-1-cj9m.onrender.com/
+
+This is a [Next.js](https://nextjs.org) app paired with an Express backend, deployed on Render. Use the demo link above to view the live product store.
 
 ## Getting Started
 
