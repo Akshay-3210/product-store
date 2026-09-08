@@ -1,5 +1,5 @@
 import { useProductStore } from '@/store/useProductStore'
-import { DollarSignIcon, ImageIcon, PackageIcon, PlusCircleIcon } from 'lucide-react';
+import { DollarSignIcon, ImageIcon, PackageIcon, PhoneIcon, PlusCircleIcon } from 'lucide-react';
 import React from 'react'
 
 function AddProductModal() {
@@ -53,6 +53,25 @@ function AddProductModal() {
                         onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                         />
                     </div>
+                    </div>
+
+                    {/* owner number */}
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text text-base font-medium">Owner Number</span>
+                        </label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/50 z-10">
+                                <PhoneIcon className="w-5 h-5" />
+                            </div>
+                            <input
+                                type="tel"
+                                placeholder="+1 555 123 4567"
+                                className="input input-bordered w-full pl-10 py-3 focus:input-primary transition-colors duration-200"
+                                value={formData.owner_number || ''}
+                                onChange={(e) => setFormData({ ...formData, owner_number: e.target.value })}
+                            />
+                        </div>
                     </div>
 
                     {/* product image */}

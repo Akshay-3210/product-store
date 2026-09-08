@@ -4,6 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import productRoutes from "./routes/productRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import { sql } from "./config/db.js";
 import { aj } from "./lib/arcjet.js";
 import path from "path";
@@ -67,7 +68,8 @@ app.use(async (req,res,next)=>{
     }
 })
 
-app.use("/api/products", productRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 // Serve frontend routes through Next.js on the same port for both dev and production.
 app.use((req, res) => {
@@ -77,20 +79,36 @@ app.use((req, res) => {
 async function initDB(){
     try {
         await sql`
-            CREATE TABLE IF NOT EXISTS products(
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            image VARCHAR(255) NOT NULL,
-            price DECIMAL(10,2) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
+            CREATE TABLE IF NOT EXISTS users(
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `;
+        await sql`
+            CREATE TABLE IF NOT EXISTS products(
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                image VARCHAR(255) NOT NULL,
+                price DECIMAL(10,2) NOT NULL,
+                owner_number VARCHAR(30),
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `;
+        // Ensure user_id exists on products table if it was created previously
+        try {
+            await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE`;
+            await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS owner_number VARCHAR(30)`;
+        } catch (e) {
+            console.log("Error updating the products table schema", e);
+        }
         console.log("database initialised successfully");
-        
+
     } catch (error) {
-        console.log("error");
-        
+        console.log("error during initDB", error);
+
     }
 }
 

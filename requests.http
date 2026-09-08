@@ -1,0 +1,12 @@
+GET http://localhost:5001/api/products 
+
+###
+
+POST http://localhost:5001/api/products
+Content-Type: application/json
+
+{
+  "name": "Phone",
+  "price": 999,
+  "image": "https://example.com/phone.jpg"
+}

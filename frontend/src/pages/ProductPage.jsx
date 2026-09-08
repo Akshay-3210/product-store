@@ -93,6 +93,19 @@ function ProductPage({ id }) {
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                 />
               </div>
+              {/* owner number */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-base font-medium">Owner Number</span>
+                </label>
+                <input
+                  type="tel"
+                  placeholder="+1 555 123 4567"
+                  className="input input-bordered w-full"
+                  value={formData.owner_number || ''}
+                  onChange={(e) => setFormData({ ...formData, owner_number: e.target.value })}
+                />
+              </div>
               {/* product image */}
               <div className="form-control">
                 <label className="label">
