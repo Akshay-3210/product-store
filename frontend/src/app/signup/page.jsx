@@ -7,17 +7,25 @@ import toast from 'react-hot-toast';
 export default function SignupPage() {
   const [email, setEmail] = useState('akshay@gmail.com');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { signup } = useAuthStore();
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await signup(email, password);
-    if (result.success) {
-      toast.success('Account created successfully!');
-      router.push('/');
-    } else {
-      toast.error(result.message);
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const result = await signup(email, password);
+      if (result.success) {
+        toast.success('Account created successfully!');
+        router.push('/');
+      } else {
+        toast.error(result.message);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -27,8 +35,8 @@ export default function SignupPage() {
         <div className="card-body">
           <h2 className="card-title text-2xl font-bold text-center">Sign Up</h2>
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-            <div className="form-control">
-              <label className="label">
+            <div className="form-control flex flex-col items-start gap-2">
+              <label className="label p-0">
                 <span className="label-text">Email</span>
               </label>
               <input
@@ -39,8 +47,8 @@ export default function SignupPage() {
                 required
               />
             </div>
-            <div className="form-control">
-              <label className="label">
+            <div className="form-control flex flex-col items-start gap-2">
+              <label className="label p-0">
                 <span className="label-text">Password</span>
               </label>
               <input
@@ -52,7 +60,9 @@ export default function SignupPage() {
               />
             </div>
             <div className="form-control mt-6">
-              <button type="submit" className="btn btn-primary">Sign Up</button>
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? 'Creating account...' : 'Sign Up'}
+              </button>
             </div>
           </form>
           <div className="text-center mt-4">
