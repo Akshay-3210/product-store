@@ -25,7 +25,7 @@ function ProductCard({product}) {
       {/* Card body */}
       <div className='rounded-b-xl bg-neutral-900 text-white p-6'>
         <h2 className='text-lg font-semibold mb-2'>{product.name}</h2>
-        <p className='text-2xl font-bold text-emerald-400 mb-4'>${Number(product.price).toFixed(2)}</p>
+        <p className='text-2xl font-bold text-emerald-400 mb-4'>₹{Number(product.price).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
 
         <div className="space-y-2 mb-4 text-sm text-white/75">
           {product.owner_number && (
